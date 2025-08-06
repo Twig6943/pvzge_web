@@ -1,8 +1,21 @@
-# PvZ2 Gardendless Web Version
+<div align="center">
+
+<img width=20% src="https://pvzge.com/pvz_logo-round.webp" alt="">
+
+# PvZ2 Gardendless
+
+**An endless garden requires an endless defense!**
+
+Thanks to everyone who has supported this project!
 
 ![](https://img.shields.io/badge/author-Gaozih-%2366ccff)
 ![](https://img.shields.io/github/license/Gzh0821/pvzge_web)
+![](https://img.shields.io/docker/pulls/gaozih/pvzge)
+![](https://img.shields.io/discord/1265377295846346803?label=discord)
 ![](https://img.shields.io/github/stars/Gzh0821/pvzge_web)
+</div>
+
+### Info
 
 This is the open source repo of the web version of "PvZ2 Gardendless".
 
@@ -10,7 +23,7 @@ This is the open source repo of the web version of "PvZ2 Gardendless".
 
 Visit our [website](https://pvzge.com/en/) for download links, game guides and more. You can also report bugs, make comments and suggestions in the feedback module of the website or in the issues and discussions of this project!
 
-## Online Web Play
+## Web Play
 
 Try PvZ2 Gardendless online in [here](https://play.pvzge.com/) !
 
