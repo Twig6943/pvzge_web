@@ -35,16 +35,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Zip release folder
-        run: |
-          zip -r pvzge-mac-${{ github.event.inputs.release_tag }}.zip release/
-
-      - name: Create GitHub Release with zip
+      - name: Create GitHub Release with .dmg
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.release_tag }}
           name: "pvzge macOS Release ${{ github.event.inputs.release_tag }}"
           body: "Automated macOS release built via GitHub Actions."
-          files: pvzge-mac-${{ github.event.inputs.release_tag }}.zip
+          files: release/*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
