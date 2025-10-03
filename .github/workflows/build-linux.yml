@@ -29,7 +29,9 @@ jobs:
       - name: Get version from index.html
         id: get_version
         run: |
-          echo "VERSION=$(node -p \"require('./docs/index.html').version\")" >> $GITHUB_ENV
+          VERSION=$(sed -n '7p' docs/index.html | grep -oP '\d+\.\d+\.\d+')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
 
       - name: Create GitHub Release
         id: create_release
