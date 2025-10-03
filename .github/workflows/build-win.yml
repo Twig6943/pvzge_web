@@ -31,10 +31,27 @@ jobs:
           npm run build:win -- --publish=never
         shell: pwsh
         env:
-          GH_TOKEN: ""
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload release folder
-        uses: actions/upload-artifact@v4
+      - name: Get version from index.html
+        id: get_version
+        run: |
+          $line = Get-Content docs\index.html | Select-Object -Index 6
+          $version = [regex]::Match($line, '\d+\.\d+\.\d+').Value
+          echo "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8
+        shell: pwsh
+
+      - name: Zip release folder
+        run: |
+          Compress-Archive -Path release\* -DestinationPath pvzge-windows-v${{ env.VERSION }}.zip
+        shell: pwsh
+
+      - name: Create GitHub Release with zip
+        uses: softprops/action-gh-release@v1
         with:
-          name: pvzge-windows-release
-          path: release/
+          tag_name: "v${{ env.VERSION }}"
+          name: "pvzge Windows Release v${{ env.VERSION }}"
+          body: "Automated Windows release built via GitHub Actions."
+          files: pvzge-windows-v${{ env.VERSION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
