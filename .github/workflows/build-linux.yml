@@ -1,7 +1,7 @@
 name: Build linux
 
 on:
-  workflow_dispatch: # allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build-electron:
@@ -23,8 +23,6 @@ jobs:
         run: |
           npm install
           npm run build:linux -- --publish=never
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get version from index.html
         id: get_version
@@ -32,20 +30,12 @@ jobs:
           VERSION=$(sed -n '7p' docs/index.html | grep -oP '\d+\.\d+\.\d+')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-
-      - name: Create GitHub Release
-        id: create_release
+      - name: Create GitHub Release with assets
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "v${{ env.VERSION }}"
           name: "pvzge Linux Release v${{ env.VERSION }}"
           body: "Automated Linux release built via GitHub Actions."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload release assets
-        uses: softprops/action-gh-release@v1
-        with:
-          files: release/**/*
+          files: release/**/*   # Upload all files in release folder
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
