@@ -15,7 +15,7 @@ jobs:
       - name: Install Node.js and npm
         run: |
           sudo apt-get update
-          sudo apt-get install -y nodejs npm
+          sudo apt-get install -y nodejs npm zip
           node -v
           npm -v
 
@@ -30,12 +30,16 @@ jobs:
           VERSION=$(sed -n '7p' docs/index.html | grep -oP '\d+\.\d+\.\d+')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Create GitHub Release with assets
+      - name: Zip release folder
+        run: |
+          zip -r pvzge-linux-v${{ env.VERSION }}.zip release/
+
+      - name: Create GitHub Release with zip
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "v${{ env.VERSION }}"
           name: "pvzge Linux Release v${{ env.VERSION }}"
           body: "Automated Linux release built via GitHub Actions."
-          files: release/**/*   # Upload all files in release folder
+          files: pvzge-linux-v${{ env.VERSION }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
