@@ -23,6 +23,12 @@ This is the open source repo of the web version of "PvZ2 Gardendless".
 
 Visit our [website](https://pvzge.com/en/) for download links, game guides and more. You can also report bugs, make comments and suggestions in the feedback module of the website or in the issues and discussions of this project!
 
+### Warning: Please run the windows version with proton if you want GPU acceleration on linux/mac
+
+Chromium webgl functionality highly experimental on linux/mac (especially when using the wayland backend). See [this issue](https://github.com/Gzh0821/pvzg_site/issues/85)
+
+If you're using wine wayland driver, you might need to start the .exe with `--in-process-gpu` for it to work properly.
+
 ## Web Play
 
 Try PvZ2 Gardendless online in [here](https://play.pvzge.com/) !
