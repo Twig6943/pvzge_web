@@ -1,0 +1,49 @@
+name: Build linux
+
+on:
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  build-electron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Node.js and npm
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nodejs npm
+          node -v
+          npm -v
+
+      - name: Build
+        run: |
+          npm install
+          npm run build:linux -- --publish=never
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version from index.html
+        id: get_version
+        run: |
+          echo "VERSION=$(node -p \"require('./docs/index.html').version\")" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          name: "pvzge Linux Release v${{ env.VERSION }}"
+          body: "Automated Linux release built via GitHub Actions."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
